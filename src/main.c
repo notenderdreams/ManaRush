@@ -4,7 +4,8 @@
 #include "character.h"
 #include <stdlib.h>
 
-const int screenWidth = 1450, screenHeight = 850;
+#define screenWidth 1450
+#define screenHeight 850
 const int characterSpeed = 10;
 const int gravity = 1;
 const int groundYPos = (3 * screenHeight) / 4;
