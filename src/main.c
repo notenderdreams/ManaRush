@@ -25,10 +25,11 @@ int main(void) {
     Rectangle startButton = {screenWidth/2.0f - 100, screenHeight/2.0f - 60, 200, 50};
     Rectangle exitButton  = {screenWidth/2.0f - 100, screenHeight/2.0f + 20, 200, 50};
 
-    Character player = InitCharacter("cropped_AnimationSheet_Character.png", groundYPos, scale);
+    // Updated paths
+    Character player = InitCharacter("assets/sprites/cropped_AnimationSheet_Character.png", groundYPos, scale);
 
-    Sound footstepSound = LoadSoundOrExit("running.mp3");
-    Sound landingSound  = LoadSoundOrExit("landing.mp3");
+    Sound footstepSound = LoadSoundOrExit("assets/sounds/running.mp3");
+    Sound landingSound  = LoadSoundOrExit("assets/sounds/landing.mp3");
 
     SetTargetFPS(60);
 
