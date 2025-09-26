@@ -132,20 +132,25 @@ void RenderGame(GameState *game) {
     RenderMap(game->map, &game->player, &game->boss); // Render map and entities
     EndMode2D();
 
-    // Display game over message if game has ended
+    // EndcScreen
     if (game->gameOver) {
         const char *text = game->playerWon ? "You Win" : "You Died";
         Color color = game->playerWon ? GREEN : RED;
         int textWidth = MeasureText(text, 60);
-        // Center the text on screen
         DrawText(text, DISPLAY_W / 2 - textWidth / 2, DISPLAY_H / 2 - 30, 60, color);
     }
 }
 
-// Clean up game resources
+/*
+    Clean up game resources
+    -player
+    -boss
+    -projectile
+    -map
+*/
 void CleanupGame(GameState *game) {
-    CleanupAnimation(&game->player); // Clean up player resources
-    CleanupBoss(&game->boss);        // Clean up boss resources
-    CleanupProjectiles();            // Clean up projectile system
-    tmx_map_free(game->map);         // Free the loaded map
+    CleanupAnimation(&game->player); 
+    CleanupBoss(&game->boss);        
+    CleanupProjectiles();            
+    tmx_map_free(game->map);         
 }
