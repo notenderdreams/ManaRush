@@ -1,28 +1,29 @@
 #ifndef GAME_H
 #define GAME_H
 
-// Include necessary libraries
-#include "raylib.h"      // Raylib graphics/audio/input library
-#include "tmx.h"         // TMX map loader for tilemaps
-#include "character.h"   // Character/player definitions
-#include "boss.h"        // Boss enemy definitions
-#include "projectile.h"  // Projectile/bullet definitions
+#include "raylib.h"      
+#include "tmx.h"         
+#include "character.h"   
+#include "boss.h"        
+#include "projectile.h"  
 
-// Screen dimensions constants
-#define DISPLAY_W 1450   // Window width in pixels
-#define DISPLAY_H 850    // Window height in pixels
+//========================
+//      Constants
+//========================
+#define DISPLAY_W 1450      // width in pixels
+#define DISPLAY_H 850        //  height in pixels
 #define CAMERA_SPEED 300.0f  // Camera movement speed
 
-// Main game state structure - holds all game data
+// GameState
 typedef struct {
-    Camera2D camera;     // 2D camera for viewport control
-    tmx_map *map;        // Loaded tilemap from TMX file
-    Animation player;    // Player character with animation
-    Boss boss;          // Boss enemy
+    Camera2D camera;     // Camera
+    tmx_map *map;        // map 
+    Animation player;    // player
+    Boss boss;          // Boss 
     float shootTimer;   // Timer for shooting cooldown
     bool wasColliding;  // Track previous collision state
     bool gameOver;      // Game over flag
-    bool playerWon;     // Player victory flag
+    bool playerWon;     // victory flag
 } GameState;
 
 // Function declarations - game lifecycle management
