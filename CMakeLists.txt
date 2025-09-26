@@ -1,41 +1,44 @@
 cmake_minimum_required(VERSION 3.10)
-project(game C)
+project(ManaRush)
+
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
+set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_SOURCE_DIR})
 
 set(CMAKE_C_STANDARD 11)
 
-# Source files
-set(SOURCES
-    src/main.c
-    src/music.c
-    src/interface.c
-    src/character.c
+include_directories(/opt/homebrew/include)
+
+set(SOURCE_FILES
+    main.c
+    game.c
+    character.c
+    boss.c
+    projectile.c
+    map_renderer.c
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(tmx_example ${SOURCE_FILES})
 
-# Headers
-include_directories(${CMAKE_SOURCE_DIR}/headers)
-
-# --- Copy assets to build directory ---
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/assets
-    ${CMAKE_BINARY_DIR}/assets
-)
 
 if(APPLE)
-    include_directories(/opt/homebrew/opt/raylib/include)
-    target_link_libraries(${PROJECT_NAME} /opt/homebrew/opt/raylib/lib/libraylib.dylib)
-    target_link_libraries(${PROJECT_NAME}
+target_link_libraries(tmx_example 
         "-framework OpenGL"
-        "-framework Cocoa"
+        "-framework Cocoa" 
         "-framework IOKit"
         "-framework CoreVideo"
+        /opt/homebrew/lib/libraylib.dylib
+        /opt/homebrew/lib/libtmx.dylib
+        m dl pthread
     )
 endif()
 
+
 if(WIN32)
     include_directories("C:/raylib/include")
+    include_directories("D:/local/tmx/include")
+    
     target_link_libraries(${PROJECT_NAME} "C:/raylib/lib/raylib.lib")
+    target_link_libraries(${PROJECT_NAME} "D:/local/tmx/lib/tmx.lib")
     target_link_libraries(${PROJECT_NAME} opengl32 gdi32 winmm)
 endif()
