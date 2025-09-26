@@ -22,6 +22,7 @@ typedef struct Boss {
     // Attack skill textures (direction-specific)
     Texture2D skillRight;    // Texture used for right-facing attacks or skills
     Texture2D skillLeft;     // Texture used for left-facing attacks or skills
+    Texture2D deathTex;
     
     // Battle phase management (for multi-phase boss fights)
     int phase;               // Current phase of the boss fight (1, 2, 3, etc.)
@@ -66,7 +67,7 @@ void UpdateBoss(Boss *boss, float delta, tmx_map *map);
 
 // Renders the boss to the screen with appropriate animation state
 // Parameters: boss pointer, texture to use for death animation
-void DrawBoss(Boss *boss, Texture2D deathTex);
+void DrawBoss(Boss *boss);
 
 // Cleans up and frees all resources allocated for the boss
 // Parameters: boss pointer to clean up

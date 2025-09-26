@@ -43,6 +43,7 @@ void InitBoss(Boss *boss, Vector2 position, tmx_map *map) {
     // Load boss attack skill textures - different for left/right facing
     boss->skillRight = LoadTexture("skill1.png");  // Right-facing attack sprites
     boss->skillLeft = LoadTexture("skill2.png");   // Left-facing attack sprites
+    boss->deathTex =LoadTexture("skill7.png");
 }
 
 // Update boss logic each frame - handles AI, movement, attacks, and phase changes
@@ -254,7 +255,7 @@ void UpdateBoss(Boss *boss, float delta, tmx_map *map) {
 }
 
 // Draw the boss with appropriate animation state
-void DrawBoss(Boss *boss, Texture2D deathTex) {
+void DrawBoss(Boss *boss) {
     float scale = 1.8f;  // Scale factor for boss size
 
     // DEATH ANIMATION: Draw death sequence when boss is defeated
@@ -271,8 +272,8 @@ void DrawBoss(Boss *boss, Texture2D deathTex) {
             // Death texture is a sprite sheet with 10 columns and 2 rows (20 total frames)
             int cols = 10;
             int rows = 2;
-            int frameWidth = deathTex.width / cols;
-            int frameHeight = deathTex.height / rows;
+            int frameWidth = boss->deathTex.width / cols;
+            int frameHeight = boss->deathTex.height / rows;
 
             // Calculate current frame position in the sprite sheet
             int currentRow = boss->deathFrame / cols;  // Which row (0 or 1)
@@ -295,7 +296,7 @@ void DrawBoss(Boss *boss, Texture2D deathTex) {
             };
 
             // Draw the current death animation frame
-            DrawTexturePro(deathTex, source, dest, (Vector2){0,0}, 0, WHITE);
+            DrawTexturePro(boss->deathTex, source, dest, (Vector2){0,0}, 0, WHITE);
 
             // Advance to next frame based on time
             boss->deathFrameCounter += GetFrameTime();
@@ -346,4 +347,5 @@ void DrawBoss(Boss *boss, Texture2D deathTex) {
 void CleanupBoss(Boss *boss) {
     UnloadTexture(boss->skillRight);  // Free right-facing skill texture
     UnloadTexture(boss->skillLeft);   // Free left-facing skill texture
+    UnloadTexture(boss->deathTex); 
 }

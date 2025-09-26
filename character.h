@@ -1,9 +1,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-// Include necessary libraries
-#include "raylib.h"  // Raylib graphics/audio/input library
-#include "tmx.h"     // TMX map loader for collision detection
+#include "raylib.h"  
+#include "tmx.h"     
 
 // Animation and character constants
 #define FRAME_WIDTH 50      // Width of each animation frame in pixels

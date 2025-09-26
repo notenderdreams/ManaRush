@@ -101,8 +101,6 @@ static void draw_layer(tmx_map *map, tmx_layer *layer) {
 // Draw all layers and  entities
 static void draw_all_layers(tmx_map *map, tmx_layer *layers, Animation *anim, Boss *boss) {
 
-    Texture2D bossDeathTex = LoadTexture("skill7.png");
-    
     // Iterate through all layers in the map
     while (layers) {
 
@@ -119,10 +117,8 @@ static void draw_all_layers(tmx_map *map, tmx_layer *layers, Animation *anim, Bo
         -projectiles
     */
     DrawAnimation(anim);        
-    DrawBoss(boss, bossDeathTex); 
+    DrawBoss(boss); 
     DrawProjectiles();          
-    
-    UnloadTexture(bossDeathTex);
 }
 
 // Main map rendering function - draws the entire game scene
