@@ -18,11 +18,11 @@ set(SOURCE_FILES
     map_renderer.c
 )
 
-add_executable(tmx_example ${SOURCE_FILES})
+add_executable(ManaRush ${SOURCE_FILES})
 
 
 if(APPLE)
-target_link_libraries(tmx_example 
+target_link_libraries(ManaRush
         "-framework OpenGL"
         "-framework Cocoa" 
         "-framework IOKit"

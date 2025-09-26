@@ -15,7 +15,7 @@ void InitGame(GameState *game, const char *mapPath) {
     game->map = tmx_load(mapPath);
     if (!game->map) {
         tmx_perror("tmx_load");
-        exit(1); // Exit if map fails to load
+        exit(1); // Exit if map fails 
     }
 
     // Initialize 
