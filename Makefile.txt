@@ -1,0 +1,45 @@
+# Compiler and flags
+CC = gcc
+CFLAGS = -I/opt/homebrew/include -std=c11 -Wall -Wextra
+LDFLAGS = -L/opt/homebrew/lib -lraylib -ltmx -lm -ldl -lpthread
+FRAMEWORKS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+
+# Source files
+SRC_FILES = main.c game.c character.c boss.c projectile.c map_renderer.c
+OBJ_FILES = $(SRC_FILES:.c=.o)
+TARGET = tmx_example
+
+# Default target
+all: $(TARGET)
+
+# Link the executable
+$(TARGET): $(OBJ_FILES)
+	$(CC) -o $(TARGET) $(OBJ_FILES) $(LDFLAGS) $(FRAMEWORKS)
+
+# Compile source files to object files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Run the program
+run: $(TARGET)
+	./$(TARGET) map.tmx
+
+# Clean up build files
+clean:
+	rm -f $(OBJ_FILES) $(TARGET)
+
+# Install dependencies (optional)
+deps:
+	brew update
+	brew install raylib libtmx
+
+# Show help
+help:
+	@echo "Available targets:"
+	@echo "  all     - Build the project (default)"
+	@echo "  run     - Build and run the project"
+	@echo "  clean   - Remove build files"
+	@echo "  deps    - Install dependencies (requires Homebrew)"
+	@echo "  help    - Show this help message"
+
+.PHONY: all run clean deps help
