@@ -5,7 +5,7 @@
 #include <string.h>
 #include <math.h>
 
-// Initialize the game state with a map file
+// Initializer
 void InitGame(GameState *game, const char *mapPath) {
     // Set up TMX library to use Raylib's texture loading system
     tmx_img_load_func = raylib_tex_loader;
@@ -18,19 +18,20 @@ void InitGame(GameState *game, const char *mapPath) {
         exit(1); // Exit if map fails to load
     }
 
-    // Initialize player animation and projectile system
+    // Initialize 
+    // player animation and projectile system
     InitAnimation(&game->player, game->map->tile_height);
     InitProjectiles();
 
-    // Default spawn positions (used if no spawn points found in map)
+    // Default spawn positions (Hardcoded the spawn points if it fails )
     Vector2 player_spawn = {343, 471};
     Vector2 boss_spawn = {4695.33, 475};
 
     // Search through map layers to find spawn points
     tmx_layer *layer = game->map->ly_head;
     while (layer) {
-        if (layer->type == L_OBJGR) { // Object group layer
-            // Find player spawn point
+        if (layer->type == L_OBJGR) { 
+            // player spawn 
             if (strcmp(layer->name, "p_spawn") == 0) {
                 tmx_object *obj = layer->content.objgr->head;
                 if (obj) {
@@ -38,7 +39,7 @@ void InitGame(GameState *game, const char *mapPath) {
                     player_spawn.y = obj->y;
                 }
             }
-            // Find boss spawn point
+            // boss spawn 
             else if (strcmp(layer->name, "boss_spawn") == 0) {
                 tmx_object *obj = layer->content.objgr->head;
                 if (obj) {
@@ -54,10 +55,10 @@ void InitGame(GameState *game, const char *mapPath) {
     game->player.position = player_spawn;
     InitBoss(&game->boss, boss_spawn, game->map);
 
-    // Set up the game camera
+    // camera setup 
     game->camera.offset = (Vector2){DISPLAY_W / 2, DISPLAY_H / 2}; // Center camera
-    game->camera.target = game->player.position; // Follow player
-    game->camera.rotation = 0.0f;   // No rotation
+    game->camera.target = game->player.position;                    // Follow player
+    game->camera.rotation = 0.0f;                                   // No rotation
     // Calculate zoom to fit map height with some padding
     game->camera.zoom = (float)DISPLAY_H / (game->map->height * game->map->tile_height) * 1.5f;
 
@@ -68,17 +69,17 @@ void InitGame(GameState *game, const char *mapPath) {
     game->playerWon = false;        // Victory flag
 }
 
-// Update game logic each frame
+// Updater
 void UpdateGame(GameState *game, float delta) {
     // Don't update if game is over
     if (game->gameOver) return;
 
-    // Update game entities
+    // Update entities
     UpdateCharacter(&game->player, delta, game->map, &game->shootTimer);
     UpdateBoss(&game->boss, delta, game->map);
     UpdateProjectiles(delta, game->map, &game->boss);
 
-    // Boss-player collision detection (only if boss is alive)
+    // Boss-player collision detection (only if its is alive)
     if (!game->boss.isDead) {
         // Calculate boss collision rectangle with scaling
         float bossW = (game->boss.skillRight.width / 6) * 1.8f;
@@ -93,43 +94,42 @@ void UpdateGame(GameState *game, float delta) {
         // Check collision and apply damage only on first contact
         bool colliding = CheckCollisionRecs(bossRect, playerRect);
         if (colliding && !game->wasColliding) {
-            game->player.health -= 200; // Apply damage
-            if (game->player.health < 0) game->player.health = 0; // Clamp health
+            game->player.health -= 200; 
+            if (game->player.health < 0) game->player.health = 0; 
         }
-        game->wasColliding = colliding; // Remember collision state for next frame
+        game->wasColliding = colliding; // set collision state for next frame
     }
 
     // Check game over conditions
     if (game->player.health <= 0) {
-        // Player died
         game->gameOver = true;
         game->player.isPaused = true;
     }
+    // Player won (boss defeated and death animation finished)
     if (game->boss.health <= 0 && game->boss.deathFinished) {
-        // Player won (boss defeated and death animation finished)
         game->gameOver = true;
         game->playerWon = true;
         game->player.isPaused = true;
     }
 
-    // Update camera to follow player with constraints
+    // Update camera to follow player 
     game->camera.target.x = game->player.position.x; // Always follow X position
     
     // Only follow Y position when player moves upward, prevent downward following
     game->camera.target.y = fmaxf(game->camera.target.y, game->player.position.y);
     
-    // Constrain camera Y position to stay within map boundaries
+    // Fix camera Y position to stay within map boundaries
     float map_h = game->map->height * game->map->tile_height;
     float min_cam_y = game->camera.offset.y / game->camera.zoom;
     float max_cam_y = map_h - (DISPLAY_H - game->camera.offset.y) / game->camera.zoom;
     game->camera.target.y = Clamp(game->camera.target.y, min_cam_y, max_cam_y);
 }
 
-// Render the game graphics
+// Renderer
 void RenderGame(GameState *game) {
-    // Start 2D mode with camera transformation
+    // Start 2D mode 
     BeginMode2D(game->camera);
-    RenderMap(game->map, &game->player, &game->boss); // Render map and entities
+    RenderMap(game->map, &game->player, &game->boss);
     EndMode2D();
 
     // EndcScreen
